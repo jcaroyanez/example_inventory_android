@@ -4,7 +4,7 @@ package com.example.dell.retrofirestapp;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.Call;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,8 +16,13 @@ import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.lang.NumberFormatException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -29,12 +34,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     DatePickerDialog datePickerDialog ;
     int Year, Month, Day ;
 
-    Inventario inventario = new Inventario();
+
+
+    Inventario inventario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //////declaraciones
         btnFechaI = (Button) findViewById(R.id.btn_fi);
         btnFechaF = (Button) findViewById(R.id.btn_ff);
         nombre = (EditText) findViewById(R.id.nProducto);
@@ -42,20 +50,27 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         precio_u = (EditText) findViewById(R.id.precio);
         total = (TextView) findViewById(R.id.total);
         btnGuardar = (Button)findViewById(R.id.btnguardar);
+        inventario = new Inventario();
 
 
 
 
-
-        ////////////////////////////777
+        ///////////////////////////
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inventario.setNombre(nombre.getText().toString());
-                inventario.setCantidad(Integer.parseInt(cantidad.getText().toString()));
-                inventario.setPrecio(Double.parseDouble(precio_u.getText().toString()));
-                inventario.setTotal(Double.parseDouble(total.getText().toString()));
-                Log.d(TAG_D,inventario.toString());
+                if(nombre.getText().equals("") || cantidad.getText().equals("")
+                        || precio_u.getText().equals("") || total.getText().equals("0")
+                        || inventario.getFecha_i() == null || inventario.getFecha_f() == null  ){
+                     Toast.makeText(getApplicationContext(),"Asegúrese de a ver llenado todo los campos y a ver seleccionado" +
+                             " las fechas",Toast.LENGTH_SHORT).show();
+                }else{
+                    inventario.setNombre(nombre.getText().toString());
+                    inventario.setCantidad(Integer.parseInt(cantidad.getText().toString()));
+                    inventario.setPrecio(Double.parseDouble(precio_u.getText().toString()));
+                    inventario.setTotal(Double.parseDouble(total.getText().toString()));
+                    saveCarro(inventario);
+                }
             }
         });
 
@@ -77,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 if(!cantidad.getText().toString().equals("")) {
                     try {
                         total.setText(String.valueOf(Integer.parseInt(cantidad.getText().toString())
-                                + (Double.parseDouble(s.toString()))));
+                                * (Double.parseDouble(s.toString()))));
                     }catch (NumberFormatException ne){
                         total.setText("0");
                     }
@@ -137,13 +152,43 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePickerDialog view, int Year, int Month, int Day) {
+          Log.d(TAG_D,Year+"-"+Month+"-"+Day);
          if(view.getTag().equals("DatePickerDialogI")){
-             inventario.setFecha_i(Year+"-"+Month+"-"+Day);
+             inventario.setFecha_i(Year+"-"+(Month+1)+"-"+Day);
          }else{
-            inventario.setFecha_f(Year+"-"+Month+"-"+Day);
+            inventario.setFecha_f(Year+"-"+(Month+1)+"-"+Day);
          }
 
     }
+  ///////////////////// servicios
+        public void saveCarro(final Inventario inventario){
+        ClientService clientService = ClientService.retrofit.create(ClientService.class);
+            final Call<Respuesta> call = clientService.save(inventario);
+            call.enqueue(new Callback<Respuesta>() {
+                @Override
+                public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                    if(response.body().getStatus().equals("success")){
+                        Toast.makeText(getApplicationContext(),
+                                response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                                nombre.setText("");
+                                cantidad.setText("");
+                                precio_u.setText("");
+                                total.setText("0");
+                                datePickerDialog = DatePickerDialog
+                                        .newInstance(MainActivity.this, Year, Month, Day);
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                    Log.d(TAG_D,response.body().getMessage());
+                }
+                @Override
+                public void onFailure(Call<Respuesta> call, Throwable t) {
+                    Log.d("Response save","save - "+t.toString());
+                }
+            });
+
+         }
     /*
     public void listAllCars(){
         ClientService clientService = ClientService.retrofit.create(ClientService.class);
@@ -162,39 +207,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Log.d(TAG_D,t.getMessage());
             }
         });
-    }*/
-
-  /*  public void saveCarro(){
-        Carro carro = new Carro();
-        carro.setMarca(t_marca.getText().toString());
-        carro.setColor(t_color.getText().toString());
-        carro.setPlaca(t_placa.getText().toString());
-
-
-
-        ClientService clientService = ClientService.retrofit.create(ClientService.class);
-        final Call<Respuesta> call = clientService.save(carro);
-        call.enqueue(new Callback<Respuesta>() {
-
-            @Override
-            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                Log.d("Response save","save - "+response.body().getMessage());
-                if(response.body().getStatus().equals("success")){
-                    Toast.makeText(getApplicationContext(),response.body().getMessage(),Toast.LENGTH_SHORT).show();
-                    t_marca.setText("");
-                    t_color.setText("");
-                    t_placa.setText("");
-                }else{
-                    Toast.makeText(getApplicationContext(),response.body().getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Respuesta> call, Throwable t) {
-                Log.d("Response save","save - "+t.toString());
-            }
-        });
-        //Log.d(TAG_D,carro.toString());
     }*/
 
 }

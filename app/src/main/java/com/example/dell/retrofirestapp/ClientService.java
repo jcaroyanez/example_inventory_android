@@ -24,14 +24,15 @@ public interface ClientService {
             .setLenient()
             .create();
 
-    /*@GET("carros")
-    Call<List<Carro>> findAllPlaca();
+    @GET("inventarios")
+    Call<List<Inventario>> listarCarros();
 
     @Headers({"Content-Type:application/json"})
-    @POST("cars")
-    public Call<Respuesta> save(@Body Carro placa);
+    @POST("inventario")
+     Call<Respuesta> save(@Body Inventario inventario);
+
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.111/practicas/api-rest-carro/carro-api.php/")
+            .baseUrl("http://192.168.1.111/practicas/api-rest-inventario/carro-api.php/")
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .build();*/
+            .build();
 }

@@ -48,15 +48,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.0.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="297d4bcf6ed4e747a1bf7d0d094a2d911a8d3a8e">
-        <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-25.0.1_d5d2c1e6229a46889e2d8d476ac0f81403860550.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -72,6 +63,15 @@
         revision="25.0.2"
         sha1="f8d87f15b94b8d74e7ccf61d7eedb558811cdb30">
         <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\converter-gson-2.0.2_a5f4ec57371fd7421c7fd7685076d583deb02fd6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\DELL\Documents\android-sdk-windows\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_8c116dab05ea6d86e26f7572bdc581094ce28bcd.jar" />
     </item>
     <item
         is-multidex="false"
@@ -120,6 +120,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\com.android.support.constraint-constraint-layout-1.0.2_ebdf8b335b8128c351614098441b912b5984c284.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.1.0\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -135,6 +144,15 @@
         revision="25.0.2"
         sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
         <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.1.0_6f8cdb11ad2ba3ba6012236b0aad20ab93e87b1c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-25.1.0_692c16118cfda24a1aa0374057d8cc77408b6840.jar" />
     </item>
     <item
         is-multidex="false"
@@ -171,6 +189,15 @@
         revision="25.0.2"
         sha1="043eeae0b9fb087bb3194ba59ab63a38a32fbf3e">
         <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\retrofit-2.0.2_53fbd806c4b2d65c6b95761b9ea51ad86a420dc4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\25.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7f2420506110902f033406b25697cf97ee8c38b2">
+        <dex dex="C:\Users\DELL\Documents\practidasIndependiente\material\retrofi.rest.app\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-25.1.0_ce9f8540a86698f058fc2e806076a1debf0c34ee.jar" />
     </item>
 
 </items>

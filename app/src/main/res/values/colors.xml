@@ -5,5 +5,8 @@
     <color name="colorAccent">#000000</color>
     <color name="fondo">#F5D563</color>
     <color name="bottonFecha">#DFB43F</color>
-    <color name="colorTexto">#00CCFF</color>
+    <color name="colorTexto">#FFFF</color>
+    <color name="fondoList">#EEEEEE</color>
+    <color name="colorNombre">#7E57C2</color>
+    <color name="floating">#0099CC</color>
 </resources>

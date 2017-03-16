@@ -31,6 +31,9 @@ public interface ClientService {
     @POST("inventario")
      Call<Respuesta> save(@Body Inventario inventario);
 
+    @GET("delete/{id}")
+    Call<Respuesta> delete(@Path("id") int id);
+
     public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://192.168.1.111/practicas/api-rest-inventario/carro-api.php/")
             .addConverterFactory(GsonConverterFactory.create(gson))

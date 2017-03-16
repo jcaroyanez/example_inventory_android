@@ -18,6 +18,7 @@ public class IventarioAdapter  extends RecyclerView.Adapter<IventarioAdapter.Ive
 
     private ArrayList<Inventario> datos = new ArrayList<>();
     static private View.OnClickListener clickListener;
+    static private View.OnLongClickListener longClickListener;
 
     public IventarioAdapter(){
     }
@@ -29,6 +30,9 @@ public class IventarioAdapter  extends RecyclerView.Adapter<IventarioAdapter.Ive
             notifyDataSetChanged();
     }
 
+    public void remove(Inventario inventario){
+        datos.remove(inventario);
+    }
     public Inventario getItem(int pos){
         return datos.get(pos);
     }
@@ -60,6 +64,7 @@ public class IventarioAdapter  extends RecyclerView.Adapter<IventarioAdapter.Ive
             super(itemView);
 
             itemView.setOnClickListener(clickListener);
+            itemView.setOnLongClickListener(longClickListener);
             nombre = (TextView)itemView.findViewById(R.id.nombre);
             cantidad = (TextView)itemView.findViewById(R.id.cantidad);
             precio_u = (TextView)itemView.findViewById(R.id.precio);
@@ -70,8 +75,8 @@ public class IventarioAdapter  extends RecyclerView.Adapter<IventarioAdapter.Ive
         public void bindIventario(Inventario i){
             nombre.setText(i.getNombre());
             cantidad.setText(i.getCantidad()+"");
-            precio_u.setText(i.getPrecio()+"");
-            total.setText(i.getTotal()+"");
+            precio_u.setText("$ "+i.getPrecio()+"");
+            total.setText("$ "+i.getTotal()+"");
             fecha.setText(i.getFecha_i()+" / "+i.getFecha_f());
         }
     }
@@ -79,4 +84,10 @@ public class IventarioAdapter  extends RecyclerView.Adapter<IventarioAdapter.Ive
     public void setOnClickListener(View.OnClickListener clickListener) {
         this.clickListener = clickListener;
     }
+
+    public void setOnLongClickListener(View.OnLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
+    }
+
+
 }

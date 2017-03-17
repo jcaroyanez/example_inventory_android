@@ -31,11 +31,18 @@ public interface ClientService {
     @POST("inventario")
      Call<Respuesta> save(@Body Inventario inventario);
 
+    @Headers({"Content-Type:application/json"})
+    @POST("update-inventario")
+    Call<Respuesta> update(@Body Inventario inventario);
+
+    @GET("vencimiento")
+    Call<List<Vencimiento>> vencimiento();
+
     @GET("delete/{id}")
     Call<Respuesta> delete(@Path("id") int id);
 
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.111/practicas/api-rest-inventario/carro-api.php/")
+            .baseUrl("http://192.168.1.111/practicas/api-rest-inventario/inventario-api.php/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 }

@@ -17,8 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-                  android:label="Registrar un producto"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="Registrar un producto" />
+        <activity android:name=".UpdateActivity"
+            android:label="Editar Producto"></activity>
+        <service android:name=".ServiceVencimiento"
+                android:enabled="true"
+                android:exported="true"></service>
     </application>
 
 </manifest>

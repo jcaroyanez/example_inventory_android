@@ -1,6 +1,7 @@
 package com.example.dell.retrofirestapp;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     EditText nombre,cantidad,precio_u;
     TextView total;
     Calendar calendar ;
-    DatePickerDialog datePickerDialog ;
+    DatePickerDialog datePickerDialogI ;
+    DatePickerDialog datePickerDialogF ;
     int Year, Month, Day ;
 
 
@@ -39,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     Inventario inventario;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //////declaraciones
+        ////////////declaraciones//////////
         btnFechaI = (Button) findViewById(R.id.btn_fi);
         btnFechaF = (Button) findViewById(R.id.btn_ff);
         nombre = (EditText) findViewById(R.id.nProducto);
@@ -53,23 +55,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         inventario = new Inventario();
 
 
-
-
-        ///////////////////////////
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(nombre.getText().equals("") || cantidad.getText().equals("")
                         || precio_u.getText().equals("") || total.getText().equals("0")
                         || inventario.getFecha_i() == null || inventario.getFecha_f() == null  ){
-                     Toast.makeText(getApplicationContext(),"Asegúrese de a ver llenado todo los campos y a ver seleccionado" +
-                             " las fechas",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Asegúrese de a ver llenado todo los campos y a ver seleccionado" +
+                            " las fechas",Toast.LENGTH_SHORT).show();
                 }else{
                     inventario.setNombre(nombre.getText().toString());
                     inventario.setCantidad(Integer.parseInt(cantidad.getText().toString()));
                     inventario.setPrecio(Double.parseDouble(precio_u.getText().toString()));
                     inventario.setTotal(Double.parseDouble(total.getText().toString()));
-                    saveCarro(inventario);
+                    saveProducto(inventario);
                 }
             }
         });
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
 
 
-        /////////////////
         precio_u.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,37 +111,39 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        datePickerDialogI = DatePickerDialog.newInstance(MainActivity.this, Year, Month, Day);
+        datePickerDialogF = DatePickerDialog.newInstance(MainActivity.this, Year, Month, Day);
+
         btnFechaI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePickerDialog = DatePickerDialog.newInstance(MainActivity.this, Year, Month, Day);
 
-                datePickerDialog.setThemeDark(false);
+                datePickerDialogI.setThemeDark(false);
 
-                datePickerDialog.showYearPickerFirst(false);
+                datePickerDialogI.showYearPickerFirst(false);
 
-                datePickerDialog.setAccentColor(Color.parseColor("#009688"));
+                datePickerDialogI.setAccentColor(Color.parseColor("#009688"));
 
-                datePickerDialog.setTitle("Selecione la fecha inical");
+                datePickerDialogI.setTitle("Selecione la fecha inical");
 
-                datePickerDialog.show(getFragmentManager(), "DatePickerDialogI");
+                datePickerDialogI.show(getFragmentManager(), "DatePickerDialogI");
             }
         });
 
         btnFechaF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePickerDialog = DatePickerDialog.newInstance(MainActivity.this, Year, Month, Day);
 
-                datePickerDialog.setThemeDark(false);
 
-                datePickerDialog.showYearPickerFirst(false);
+                datePickerDialogF.setThemeDark(false);
 
-                datePickerDialog.setAccentColor(Color.parseColor("#009688"));
+                datePickerDialogF.showYearPickerFirst(false);
 
-                datePickerDialog.setTitle("Selecione la fecha final");
+                datePickerDialogF.setAccentColor(Color.parseColor("#009688"));
 
-                datePickerDialog.show(getFragmentManager(), "DatePickerDialogF");
+                datePickerDialogF.setTitle("Selecione la fecha final");
+
+                datePickerDialogF.show(getFragmentManager(), "DatePickerDialogF");
             }
         });
 
@@ -155,13 +155,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
           Log.d(TAG_D,Year+"-"+Month+"-"+Day);
          if(view.getTag().equals("DatePickerDialogI")){
              inventario.setFecha_i(Year+"-"+(Month+1)+"-"+Day);
+             view.initialize(MainActivity.this,Year,Month,Day);
          }else{
             inventario.setFecha_f(Year+"-"+(Month+1)+"-"+Day);
+             view.initialize(MainActivity.this,Year,Month,Day);
+
          }
 
     }
-  ///////////////////// servicios
-        public void saveCarro(final Inventario inventario){
+  ///////////////////// servicios/////////////////////////////
+        public void saveProducto(final Inventario inventario){
         ClientService clientService = ClientService.retrofit.create(ClientService.class);
             final Call<Respuesta> call = clientService.save(inventario);
             call.enqueue(new Callback<Respuesta>() {
@@ -174,8 +177,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                                 cantidad.setText("");
                                 precio_u.setText("");
                                 total.setText("0");
-                                datePickerDialog = DatePickerDialog
+                                datePickerDialogI = DatePickerDialog
                                         .newInstance(MainActivity.this, Year, Month, Day);
+
+                                datePickerDialogF = DatePickerDialog
+                                .newInstance(MainActivity.this, Year, Month, Day);
                     }else{
                         Toast.makeText(getApplicationContext(),
                                 response.body().getMessage(),Toast.LENGTH_SHORT).show();
@@ -189,24 +195,5 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             });
 
          }
-    /*
-    public void listAllCars(){
-        ClientService clientService = ClientService.retrofit.create(ClientService.class);
-        final Call call = clientService.findAllPlaca();
-
-        call.enqueue(new Callback<List<Carro>>() {
-            @Override
-            public void onResponse(Call<List<Carro>> call, Response<List<Carro>> response) {
-                Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_LONG).show();
-                Log.d(TAG_D,response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<List<Carro>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
-                Log.d(TAG_D,t.getMessage());
-            }
-        });
-    }*/
 
 }

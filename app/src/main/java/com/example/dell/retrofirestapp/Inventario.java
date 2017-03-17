@@ -1,12 +1,13 @@
 package com.example.dell.retrofirestapp;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by DELL on 12/03/2017.
  */
 
-public class Inventario {
+public class Inventario implements Serializable{
     int id;
     String fecha_i = null;
     String fecha_f = null;

@@ -28,6 +28,7 @@ public class ListInventarioActivity extends AppCompatActivity {
     IventarioAdapter iventarioAdapter;
     RecyclerView inveRecicler;
     FloatingActionButton agregar;
+    Inventario inventario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,10 @@ public class ListInventarioActivity extends AppCompatActivity {
         iventarioAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              inventario = iventarioAdapter.getItem(inveRecicler.getChildAdapterPosition(v));
+             Intent intent = new Intent().setClass(ListInventarioActivity.this,UpdateActivity.class);
+                intent.putExtra("inventario",inventario);
+                startActivity(intent);
             }
         });
 
@@ -67,6 +71,9 @@ public class ListInventarioActivity extends AppCompatActivity {
             }
         });
         listInventario();
+
+        Intent intent = new Intent(getApplicationContext(),ServiceVencimiento.class);
+        startService(intent);
     }
 
     public void refrescar(List<Inventario> inventarios){

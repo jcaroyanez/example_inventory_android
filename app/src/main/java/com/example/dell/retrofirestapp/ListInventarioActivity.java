@@ -2,6 +2,7 @@ package com.example.dell.retrofirestapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
 import java.security.PublicKey;
@@ -21,14 +23,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.support.design.widget.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
-public class ListInventarioActivity extends AppCompatActivity {
+public class ListInventarioActivity extends AppCompatActivity  implements SearchView.OnQueryTextListener{
     private final String TAG_D = "ListInventarioActivity";
     IventarioAdapter iventarioAdapter;
     RecyclerView inveRecicler;
     FloatingActionButton agregar;
     Inventario inventario;
+    List<Inventario> inventariosList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,7 @@ public class ListInventarioActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Inventario>>() {
             @Override
             public void onResponse(Call<List<Inventario>> call, Response<List<Inventario>> response) {
+                inventariosList = response.body();
                 refrescar(response.body());
                 Log.d(TAG_D,response.body().toString());
             }
@@ -150,5 +157,47 @@ public class ListInventarioActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.buscar_productos,menu);
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView)MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
 
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        final List<Inventario> inventarios = filter(inventariosList,newText);
+        iventarioAdapter.set((ArrayList<Inventario>) inventarios);
+        return false;
+    }
+
+    private List<Inventario> filter (List<Inventario> inventarios,String clave){
+        clave = clave.toLowerCase();
+        final List<Inventario> filterInventario = new ArrayList<>();
+        for(Inventario i:inventarios){
+            final String text = i.getNombre().toLowerCase();
+            if(text.contains(clave)){
+                filterInventario.add(i);
+            }
+        }
+        return filterInventario;
+    }
 }

@@ -5,8 +5,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:minHeight="?attr/listPreferredItemHeight"
     android:background="?attr/selectableItemBackground"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
     android:paddingTop="2dp"
     android:paddingBottom="2dp">
 

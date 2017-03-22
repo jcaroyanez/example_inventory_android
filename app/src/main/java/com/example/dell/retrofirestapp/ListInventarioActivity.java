@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class ListInventarioActivity extends AppCompatActivity  implements SearchView.OnQueryTextListener{
     private final String TAG_D = "ListInventarioActivity";
@@ -112,6 +113,8 @@ public class ListInventarioActivity extends AppCompatActivity  implements Search
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
                 Log.d(TAG_D, response.body().toString());
+                Toast.makeText(getApplicationContext(),response.body().getMessage(),Toast.LENGTH_SHORT).show();
+                listInventario();
             }
 
             @Override
@@ -143,7 +146,6 @@ public class ListInventarioActivity extends AppCompatActivity  implements Search
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 eliminar(id);
-                                listInventario();
                             }
                         })
                 .setNegativeButton("No",

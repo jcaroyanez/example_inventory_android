@@ -64,7 +64,7 @@ public class ServiceVencimiento extends Service {
     }
 
 
-    public void vencimiento() {
+    public void vencimiento(){
         ClientService clientService = ClientService.retrofit.create(ClientService.class);
         final Call call = clientService.vencimiento();
 
@@ -113,7 +113,6 @@ public class ServiceVencimiento extends Service {
         //builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         builder.setContentIntent(pendingIntent);
         builder.setOngoing(true);
-        builder.setNumber(100);
         builder.build();
 
         Notification myNotication = builder.getNotification();
